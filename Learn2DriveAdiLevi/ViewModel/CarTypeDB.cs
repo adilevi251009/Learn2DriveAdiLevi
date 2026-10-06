@@ -8,73 +8,72 @@ using System.Threading.Tasks;
 
 namespace ViewModel
 {
-    public class CityDB : BaseDB
+    public class CarTypeDB:BaseDB
     {
-        public CityList SelectAll()
+        public CarTypeList SelectAll()
         {
-            command.CommandText = $"SELECT * FROM City";
-            CityList cityList = new CityList(base.Select());
-            return cityList;
+            command.CommandText = $"SELECT * FROM CarTypes";
+            CarTypeList carTypeList = new CarTypeList(base.Select());
+            return carTypeList;
         }
 
         protected override BaseEntity CreateModel(BaseEntity entity)
         {
-            City ct = entity as City;
-            ct.CityName = reader["CityName"].ToString();
+            CarType ct = entity as CarType;
+            ct.CarTypeName = reader["CarTypeName"].ToString();
             base.CreateModel(entity);
             return ct;
         }
 
         public override BaseEntity NewEntity()
         {
-            return new City();
+            return new CarType();
         }
 
-        static private CityList list = new CityList();
+        static private CarTypeList list = new CarTypeList();
 
-
-        public static City SelectById(int id)
+        public static CarType SelectById(int id)
         {
-            CityDB db = new CityDB();
+            CarTypeDB db = new CarTypeDB();
             list = db.SelectAll();
 
-            City g = list.Find(item => item.Id == id);
-            return g;
+            CarType c = list.Find(item => item.Id == id);
+            return c;
         }
-
 
         protected override void CreateDeletedSQL(BaseEntity entity, OleDbCommand cmd)
         {
-            City c = entity as City;
+            CarType c = entity as CarType;
             if (c != null)
             {
-                string sqlStr = $"DELETE FROM City where id=@id";
+                string sqlStr = $"DELETE FROM CarTypes WHERE Id=@id";
 
                 command.CommandText = sqlStr;
                 command.Parameters.Add(new OleDbParameter("@id", c.Id));
             }
         }
+
         protected override void CreateInsertdSQL(BaseEntity entity, OleDbCommand cmd)
         {
-            City c = entity as City;
+            CarType c = entity as CarType;
             if (c != null)
             {
-                string sqlStr = $"Insert INTO City (CityName) VALUES (@cityName)";
+                string sqlStr = $"INSERT INTO CarTypes (CarTypeName) VALUES (@carTypeName)";
 
                 command.CommandText = sqlStr;
-                command.Parameters.Add(new OleDbParameter("@cityName", c.CityName));
+                command.Parameters.Add(new OleDbParameter("@carTypeName", c.CarTypeName));
             }
         }
 
         protected override void CreateUpdatedSQL(BaseEntity entity, OleDbCommand cmd)
         {
-            City c = entity as City;
+            CarType c = entity as CarType;
             if (c != null)
             {
-                string sqlStr = $"UPDATE City SET CityName=@cityName WHERE ID=@id";
+                string sqlStr = $"UPDATE CarTypes SET CarTypeName=@carTypeName WHERE Id=@id";
 
                 command.CommandText = sqlStr;
-                command.Parameters.Add(new OleDbParameter("@cityName", c.CityName));
+                command.Parameters.Add(new OleDbParameter("@carTypeName", c.CarTypeName));
                 command.Parameters.Add(new OleDbParameter("@id", c.Id));
             }
         }

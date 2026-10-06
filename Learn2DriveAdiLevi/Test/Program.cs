@@ -158,7 +158,7 @@ namespace Test
             //}
             //#endregion
 
-            //טבלאות ירושה
+            //ירושה
             ////========== TeacherDB ========
             //TeacherDB tdb = new();
             //TeacherList tList = tdb.SelectAll();
