@@ -31,6 +31,8 @@ namespace ViewModel
         }
 
         static private CityList list = new CityList();
+
+
         public static City SelectById(int id)
         {
             CityDB db = new CityDB();
@@ -39,12 +41,14 @@ namespace ViewModel
             City g = list.Find(item => item.Id == id);
             return g;
         }
+
+
         protected override void CreateDeletedSQL(BaseEntity entity, OleDbCommand cmd)
         {
             City c = entity as City;
             if (c != null)
             {
-                string sqlStr = $"DELETE FROM City where id=@id";
+                string sqlStr = $"DELETE FROM City where Id=@id";
 
                 command.CommandText = sqlStr;
                 command.Parameters.Add(new OleDbParameter("@id", c.Id));
@@ -67,14 +71,12 @@ namespace ViewModel
             City c = entity as City;
             if (c != null)
             {
-                string sqlStr = $"UPDATE City SET CityName=@cityName WHERE ID=@id";
+                string sqlStr = $"UPDATE City SET CityName=@cityName WHERE Id=@id";
 
                 command.CommandText = sqlStr;
                 command.Parameters.Add(new OleDbParameter("@cityName", c.CityName));
                 command.Parameters.Add(new OleDbParameter("@id", c.Id));
             }
         }
-
-        
     }
 }

@@ -53,7 +53,7 @@ namespace ViewModel
 
             if (p != null)
             {
-                string sqlStr = $"DELETE FROM Person WHERE ID=@id";
+                string sqlStr = $"DELETE FROM Person WHERE Id=@id";
 
                 command.CommandText = sqlStr;
                 command.Parameters.Add(new OleDbParameter("@id", p.Id));
@@ -66,13 +66,13 @@ namespace ViewModel
 
             if (p != null)
             {
-                string sqlStr = $"INSERT INTO Person (FirstName, LastName, PhoneNumber, Email, Pass) VALUES (@firstName, @lastName, @phoneNumber, @email, @pass)";
+                string sqlStr = $"INSERT INTO Person (FirstName, LastName, Email, PhoneNumber, Pass) VALUES (@firstName, @lastName, @email @phoneNumber, @pass)";
 
                 command.CommandText = sqlStr;
                 command.Parameters.Add(new OleDbParameter("@firstName", p.FirstName));
                 command.Parameters.Add(new OleDbParameter("@lastName", p.LastName));
-                command.Parameters.Add(new OleDbParameter("@phoneNumber", p.PhoneNumber));
                 command.Parameters.Add(new OleDbParameter("@email", p.Email));
+                command.Parameters.Add(new OleDbParameter("@phoneNumber", p.PhoneNumber));
                 command.Parameters.Add(new OleDbParameter("@pass", p.Pass));
             }
         }
@@ -83,15 +83,15 @@ namespace ViewModel
 
             if (p != null)
             {
-                string sqlStr = $"UPDATE Person SET FirstName=@firstName, LastName=@lastName, PhoneNumber=@phoneNumber, Email=@email, Pass=@pass WHERE ID=@id";
+                string sqlStr = $"UPDATE Person SET FirstName=@firstName, LastName=@lastName, Email=@email, PhoneNumber=@phoneNumber, Pass=@pass WHERE Id=@id";
 
                 command.CommandText = sqlStr;
                 command.Parameters.Add(new OleDbParameter("@firstName", p.FirstName));
                 command.Parameters.Add(new OleDbParameter("@lastName", p.LastName));
-                command.Parameters.Add(new OleDbParameter("@phoneNumber", p.PhoneNumber));
                 command.Parameters.Add(new OleDbParameter("@email", p.Email));
-                command.Parameters.Add(new OleDbParameter("@id", p.Id));
+                command.Parameters.Add(new OleDbParameter("@phoneNumber", p.PhoneNumber));
                 command.Parameters.Add(new OleDbParameter("@pass", p.Pass));
+                command.Parameters.Add(new OleDbParameter("@id", p.Id));
             }
         }
     }
