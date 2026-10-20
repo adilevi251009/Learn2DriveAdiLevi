@@ -8,24 +8,21 @@ using System.Threading.Tasks;
 
 namespace ViewModel
 {
-    public class ChecklistDB:BaseDB
+    public class ChecklistDB : BaseDB
     {
         public ChecklistList SelectAll()
         {
-            command.CommandText = $"SELECT * FROM Checklist";
-            ChecklistList checklistList = new ChecklistList(base.Select());
+            string sqlText = "SELECT * FROM Checklist";
+            ChecklistList checklistList = new ChecklistList(base.Select(sqlText));
             return checklistList;
         }
 
-        protected override BaseEntity CreateModel(BaseEntity entity)
+        protected override BaseEntity CreateModel(BaseEntity entity, OleDbDataReader reader)
         {
-            Checklist c = entity as Checklist;
-
-            c.IdStudent = StudentDB.SelectById((int)reader["StudentID"]);
-            c.Topic = TopicsDB.SelectById((int)reader["Topic"]);
-            c.IsDone = (bool)reader["IsDone"];
-
-            base.CreateModel(entity);
+            Checklist c = (Checklist)base.CreateModel(entity, reader);
+            c.IdStudent = StudentDB.SelectById(Convert.ToInt32(reader["StudentID"]));
+            c.Topic = TopicsDB.SelectById(Convert.ToInt32(reader["Topic"]));
+            c.IsDone = Convert.ToBoolean(reader["IsDone"]);
             return c;
         }
 
@@ -34,7 +31,7 @@ namespace ViewModel
             return new Checklist();
         }
 
-        static private ChecklistList list = new ChecklistList();
+        private static ChecklistList list = new ChecklistList();
 
         public static Checklist SelectById(int id)
         {
@@ -47,43 +44,35 @@ namespace ViewModel
 
         protected override void CreateDeletedSQL(BaseEntity entity, OleDbCommand cmd)
         {
-            Checklist c = entity as Checklist;
+            Checklist c = (Checklist)entity;
 
-            if (c != null)
-            {
-
-                command.CommandText = sqlStr;
-                command.Parameters.Add(new OleDbParameter("@id", c.Id));
-            }
+            cmd.CommandText = "DELETE FROM Checklist WHERE Id = @id";
+            cmd.Parameters.Add(new OleDbParameter("@id", c.Id));
         }
 
         protected override void CreateInsertdSQL(BaseEntity entity, OleDbCommand cmd)
         {
-            Checklist c = entity as Checklist;
+            Checklist c = (Checklist)entity;
 
-            if (c != null)
-            {
+            cmd.CommandText = "INSERT INTO Checklist (StudentID, Topic, IsDone) " +
+                                "VALUES (@idStudent, @topic, @isDone)";
 
-                command.CommandText = sqlStr;
-                command.Parameters.Add(new OleDbParameter("@idStudent", c.IdStudent.Id));
-                command.Parameters.Add(new OleDbParameter("@topic", c.Topic.Id));
-                command.Parameters.Add(new OleDbParameter("@isDone", c.IsDone));
-            }
+            cmd.Parameters.Add(new OleDbParameter("@idStudent", c.IdStudent.Id));
+            cmd.Parameters.Add(new OleDbParameter("@topic", c.Topic.Id));
+            cmd.Parameters.Add(new OleDbParameter("@isDone", c.IsDone));
         }
 
         protected override void CreateUpdatedSQL(BaseEntity entity, OleDbCommand cmd)
         {
-            Checklist c = entity as Checklist;
+            Checklist c = (Checklist)entity;
 
-            if (c != null)
-            {
+            cmd.CommandText = "UPDATE Checklist SET StudentID = @idStudent, " +
+                "Topic = @topic, IsDone = @isDone WHERE ID = @id";
 
-                command.CommandText = sqlStr;
-                command.Parameters.Add(new OleDbParameter("@idStudent", c.IdStudent.Id));
-                command.Parameters.Add(new OleDbParameter("@topic", c.Topic.Id));
-                command.Parameters.Add(new OleDbParameter("@isDone", c.IsDone));
-                command.Parameters.Add(new OleDbParameter("@id", c.Id));
-            }
+            cmd.Parameters.Add(new OleDbParameter("@idStudent", c.IdStudent.Id));
+            cmd.Parameters.Add(new OleDbParameter("@topic", c.Topic.Id));
+            cmd.Parameters.Add(new OleDbParameter("@isDone", c.IsDone));
+            cmd.Parameters.Add(new OleDbParameter("@id", c.Id));
         }
     }
 }

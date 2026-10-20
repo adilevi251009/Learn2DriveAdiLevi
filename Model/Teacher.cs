@@ -12,10 +12,12 @@ namespace Model
         private CarType carType;
         private int pricePerLesson;
         private Manager idManager;
+        private Status status;
 
         public City City { get => city; set => city = value; }
         public CarType CarType { get => carType; set => carType = value; }
         public int PricePerLesson { get => pricePerLesson; set => pricePerLesson = value; }
         public Manager IdManager { get => idManager; set => idManager = value; }
+        public Status Status { get => status; set => status = value; }
     }
 }
