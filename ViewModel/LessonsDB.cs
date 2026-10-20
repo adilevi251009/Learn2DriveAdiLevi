@@ -55,7 +55,6 @@ namespace ViewModel
 
             if (l != null)
             {
-                string sqlStr = $"DELETE FROM Lessons WHERE Id=@id";
 
                 command.CommandText = sqlStr;
                 command.Parameters.Add(new OleDbParameter("@id", l.Id));

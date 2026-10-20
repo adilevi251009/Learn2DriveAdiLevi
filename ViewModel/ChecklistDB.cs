@@ -51,7 +51,6 @@ namespace ViewModel
 
             if (c != null)
             {
-                string sqlStr = $"DELETE FROM Checklist WHERE Id=@id";
 
                 command.CommandText = sqlStr;
                 command.Parameters.Add(new OleDbParameter("@id", c.Id));
@@ -64,7 +63,6 @@ namespace ViewModel
 
             if (c != null)
             {
-                string sqlStr = $"INSERT INTO Checklist (StudentID, Topic, IsDone) VALUES (@idStudent, @topic, @isDone)";
 
                 command.CommandText = sqlStr;
                 command.Parameters.Add(new OleDbParameter("@idStudent", c.IdStudent.Id));
@@ -79,7 +77,6 @@ namespace ViewModel
 
             if (c != null)
             {
-                string sqlStr = $"UPDATE Checklist SET StudentID=@idStudent, Topic=@topic, IsDone=@isDone WHERE Id=@id";
 
                 command.CommandText = sqlStr;
                 command.Parameters.Add(new OleDbParameter("@idStudent", c.IdStudent.Id));
